@@ -18,7 +18,7 @@ namespace UC1.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int? population, string commonCountryName = "", string commonCountryNameSorting = "")
+        public async Task<IActionResult> Get(int? population, int? showFirst, string commonCountryName = "", string commonCountryNameSorting = "")
         {
             List<Country> countries = await GetCountriesAsync();
 
@@ -35,6 +35,11 @@ namespace UC1.Controllers
             if (!string.IsNullOrWhiteSpace(commonCountryNameSorting))
             {
                 countries = SortCountries(countries, commonCountryNameSorting).ToList();
+            }
+
+            if (showFirst.HasValue)
+            {
+                countries = PaginateCountries(countries, showFirst.Value).ToList();
             }
 
             return Ok(countries);
@@ -64,6 +69,11 @@ namespace UC1.Controllers
             {
                 throw new ArgumentException("Invalid order parameter. Use 'ascend' or 'descend'.");
             }
+        }
+
+        public static IEnumerable<Country> PaginateCountries(List<Country> countries, int amount)
+        {
+            return countries.Take(amount);
         }
     }
 }

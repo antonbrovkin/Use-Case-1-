@@ -1,0 +1,63 @@
+I need to create class named Country with single property Name with type Name.
+class Name should have single property named "Common" with type string.
+
+Also I need to create a filter, which can use an array of Country items and show me restricted amount of results. I can put 10 in the filter this mean that filter should return 10 results
+
+this should be created in .Net Core
+
+
+
+To create the described classes and a filter function in .NET Core, you can use the following code:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace CountryFilterApp
+{
+    public class Name
+    {
+        public string Common { get; set; }
+    }
+
+    public class Country
+    {
+        public Name Name { get; set; }
+    }
+
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            List<Country> countries = new List<Country>
+            {
+                new Country { Name = new Name { Common = "USA" } },
+                new Country { Name = new Name { Common = "Canada" } },
+                // ... (add more countries to your list here)
+            };
+
+            var result = FilterCountries(countries, 10);
+
+            foreach (var country in result)
+            {
+                Console.WriteLine(country.Name.Common);
+            }
+        }
+
+        public static List<Country> FilterCountries(List<Country> countries, int amount)
+        {
+            return countries.Take(amount).ToList();
+        }
+    }
+}
+```
+
+In the above code:
+
+1. We define a `Name` class with a `Common` property of type `string`.
+2. We define a `Country` class with a `Name` property of type `Name`.
+3. In the `Program` class, we initialize a list of `Country` objects and then use a `FilterCountries` function to filter the list and return only the specified number of countries (10 in this case).
+4. We use the `Take` method from LINQ to get the specified number of items from the list.
+
+Make sure to add more countries to your list to fully test the filter function.
