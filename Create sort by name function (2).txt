@@ -1,0 +1,126 @@
+public static IEnumerable<Country> FilterCountriesByCommonName(List<Country> countries, string commonNamePartial)
+        {
+            return countries.Where(c => c.Name.Common.IndexOf(commonNamePartial, StringComparison.OrdinalIgnoreCase) != -1);
+        }
+
+        public static IEnumerable<Country> FilterCountriesByPopulation(List<Country> countries, long threshold)
+        {
+            return countries.Where(c => c.Population < threshold);
+        }
+
+        public static IEnumerable<Country> SortCountries(List<Country> countries, string order)
+        {
+            if (order.ToLower() == "ascend")
+            {
+                return countries.OrderBy(c => c.Name.Common);
+            }
+            else if (order.ToLower() == "descend")
+            {
+                return countries.OrderByDescending(c => c.Name.Common);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid order parameter. Use 'ascend' or 'descend'.");
+            }
+        }
+
+        public static IEnumerable<Country> PaginateCountries(List<Country> countries, int amount)
+        {
+            return countries.Take(amount);
+        }
+
+
+by using this code on .Net Core generate API which can use all of those functions in single API
+
+
+
+
+
+
+
+To create an API in .NET Core that utilizes these functions, you could create a Web API project. The following instructions will guide you through setting up a basic API where these functions can be used:
+
+Step 1: Create a new Web API Project
+You can create a new project either through Visual Studio or using the command line with the dotnet command. If you are using the command line, navigate to the directory where you want to create your project and use the following command:
+
+sh
+Copy code
+dotnet new webapi -n CountryAPI
+Step 2: Add a Country Class
+Create a Country class with necessary properties in your project (usually inside a folder named Models). Here is a basic example:
+
+csharp
+Copy code
+public class Country
+{
+    public NameInfo Name { get; set; }
+    public long Population { get; set; }
+}
+
+public class NameInfo
+{
+    public string Common { get; set; }
+}
+Step 3: Create a Controller
+Create a CountriesController where you will use the methods you provided. You could place the methods you have inside this controller or in a separate service class. Here is a basic setup for the controller:
+
+csharp
+Copy code
+[ApiController]
+[Route("api/[controller]")]
+public class CountriesController : ControllerBase
+{
+    private List<Country> _countries;
+
+    public CountriesController()
+    {
+        _countries = new List<Country>
+        {
+            // Initialize your country list here
+        };
+    }
+
+    [HttpGet]
+    public IEnumerable<Country> GetCountries(string commonNamePartial, long? populationThreshold, string order, int? amount)
+    {
+        var countries = _countries.AsEnumerable();
+
+        if (!string.IsNullOrWhiteSpace(commonNamePartial))
+        {
+            countries = FilterCountriesByCommonName(countries.ToList(), commonNamePartial);
+        }
+
+        if (populationThreshold.HasValue)
+        {
+            countries = FilterCountriesByPopulation(countries.ToList(), populationThreshold.Value);
+        }
+
+        if (!string.IsNullOrWhiteSpace(order))
+        {
+            countries = SortCountries(countries.ToList(), order);
+        }
+
+        if (amount.HasValue)
+        {
+            countries = PaginateCountries(countries.ToList(), amount.Value);
+        }
+
+        return countries;
+    }
+
+    // Your existing methods go here (e.g., FilterCountriesByCommonName, FilterCountriesByPopulation, etc.)
+}
+Step 4: Set Up Startup.cs
+Ensure that necessary services are registered in Startup.cs.
+
+csharp
+Copy code
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllers();
+    // Other necessary services
+}
+Step 5: Run the Project
+You can now run your project and access the API through a URL like https://localhost:5001/api/countries.
+
+Note that for simplicity and demonstration purposes, the above example utilizes query parameters to accept inputs for each of the methods you provided. You can adjust the GetCountries method and the route attributes as necessary to match your specific requirements and to implement proper error handling, etc.

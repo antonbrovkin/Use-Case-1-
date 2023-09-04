@@ -18,31 +18,31 @@ namespace UC1.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int? population, int? showFirst, string commonCountryName = "", string commonCountryNameSorting = "")
+        public async Task<IActionResult> GetCountries(string commonNamePartial, long? populationThreshold, string order, int? amount)
         {
             List<Country> countries = await GetCountriesAsync();
 
-            if (!string.IsNullOrWhiteSpace(commonCountryName))
+            if (!string.IsNullOrWhiteSpace(commonNamePartial))
             {
-                countries = FilterCountriesByCommonName(countries, commonCountryName).ToList();
+                countries = FilterCountriesByCommonName(countries, commonNamePartial).ToList();
             }
 
-            if(population.HasValue)
+            if (populationThreshold.HasValue)
             {
-                countries = FilterCountriesByPopulation(countries, population.Value * 1000000).ToList();
+                countries = FilterCountriesByPopulation(countries, populationThreshold.Value).ToList();
             }
 
-            if (!string.IsNullOrWhiteSpace(commonCountryNameSorting))
+            if (!string.IsNullOrWhiteSpace(order))
             {
-                countries = SortCountries(countries, commonCountryNameSorting).ToList();
+                countries = SortCountries(countries, order).ToList();
             }
 
-            if (showFirst.HasValue)
+            if (amount.HasValue)
             {
-                countries = PaginateCountries(countries, showFirst.Value).ToList();
+                countries = PaginateCountries(countries, amount.Value).ToList();
             }
 
-            return Ok(countries);
+            return countries;
         }
 
         public static IEnumerable<Country> FilterCountriesByCommonName(List<Country> countries, string commonNamePartial)
