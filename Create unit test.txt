@@ -1,0 +1,307 @@
+ public IEnumerable<Country> FilterCountriesByCommonName(List<Country> countries, string commonNamePartial)
+        {
+            return countries.Where(c => c.Name.Common.IndexOf(commonNamePartial, StringComparison.OrdinalIgnoreCase) != -1);
+        }
+
+        public IEnumerable<Country> FilterCountriesByPopulation(List<Country> countries, long threshold)
+        {
+            return countries.Where(c => c.Population < threshold);
+        }
+
+        public IEnumerable<Country> SortCountries(List<Country> countries, string order)
+        {
+            if (order.ToLower() == "ascend")
+            {
+                return countries.OrderBy(c => c.Name.Common);
+            }
+            else if (order.ToLower() == "descend")
+            {
+                return countries.OrderByDescending(c => c.Name.Common);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid order parameter. Use 'ascend' or 'descend'.");
+            }
+        }
+
+        public IEnumerable<Country> PaginateCountries(List<Country> countries, int amount)
+        {
+            return countries.Take(amount);
+        }
+
+
+create unit tests for those functions by using .net core
+
+
+Sure, you can create unit tests for these methods using a unit testing framework such as xUnit. You'd first need to set up a test project and then write individual tests for each method to check if they function correctly in various scenarios. Below are example unit tests for your methods:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using Xunit;
+
+public class Country
+{
+    public NameInfo Name { get; set; }
+    public long Population { get; set; }
+}
+
+public class NameInfo
+{
+    public string Common { get; set; }
+}
+
+public class CountryService
+{
+    // Your methods go here...
+}
+
+public class CountryServiceTests
+{
+    [Fact]
+    public void Test_FilterCountriesByCommonName()
+    {
+        var countries = new List<Country>
+        {
+            new Country { Name = new NameInfo { Common = "India" }, Population = 1300000000 },
+            new Country { Name = new NameInfo { Common = "Indonesia" }, Population = 270000000 }
+        };
+
+        var service = new CountryService();
+        var result = service.FilterCountriesByCommonName(countries, "ind");
+
+        Assert.Equal(2, new List<Country>(result).Count);
+    }
+
+    [Fact]
+    public void Test_FilterCountriesByPopulation()
+    {
+        var countries = new List<Country>
+        {
+            new Country { Name = new NameInfo { Common = "India" }, Population = 1300000000 },
+            new Country { Name = new NameInfo { Common = "Indonesia" }, Population = 270000000 }
+        };
+
+        var service = new CountryService();
+        var result = service.FilterCountriesByPopulation(countries, 300000000);
+
+        Assert.Single(result);
+    }
+
+    [Fact]
+    public void Test_SortCountries()
+    {
+        var countries = new List<Country>
+        {
+            new Country { Name = new NameInfo { Common = "India" }, Population = 1300000000 },
+            new Country { Name = new NameInfo { Common = "Australia" }, Population = 25000000 }
+        };
+
+        var service = new CountryService();
+        var result = service.SortCountries(countries, "descend");
+
+        Assert.Equal("India", new List<Country>(result)[0].Name.Common);
+    }
+
+    [Fact]
+    public void Test_PaginateCountries()
+    {
+        var countries = new List<Country>
+        {
+            new Country { Name = new NameInfo { Common = "India" }, Population = 1300000000 },
+            new Country { Name = new NameInfo { Common = "Australia" }, Population = 25000000 },
+            new Country { Name = new NameInfo { Common = "USA" }, Population = 330000000 }
+        };
+
+        var service = new CountryService();
+        var result = service.PaginateCountries(countries, 2);
+
+        Assert.Equal(2, new List<Country>(result).Count);
+    }
+}
+```
+
+Explanation:
+
+1. I've created the `Country` and `NameInfo` classes and the `CountryService` class where your methods reside.
+2. Then, I've created a `CountryServiceTests` class with a method for each unit test.
+3. Inside each test method, I've created a list of `Country` objects and then called the respective method from `CountryService` to check if they return the expected results.
+4. After calling the method, I've used `Assert` class from xUnit to check the expected results.
+
+You would need to set up a .NET Core project with xUnit installed to run these tests. You can create a new xUnit test project by using the following command:
+
+```
+dotnet new xunit -n YourTestProjectName
+```
+
+After creating the project, you can add the necessary classes and tests and then run the tests using:
+
+```
+dotnet test
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public IEnumerable<Country> FilterCountriesByCommonName(List<Country> countries, string commonNamePartial)
+        {
+            return countries.Where(c => c.Name.Common.IndexOf(commonNamePartial, StringComparison.OrdinalIgnoreCase) != -1);
+        }
+
+        public IEnumerable<Country> FilterCountriesByPopulation(List<Country> countries, long threshold)
+        {
+            return countries.Where(c => c.Population < threshold);
+        }
+
+        public IEnumerable<Country> SortCountries(List<Country> countries, string order)
+        {
+            if (order.ToLower() == "ascend")
+            {
+                return countries.OrderBy(c => c.Name.Common);
+            }
+            else if (order.ToLower() == "descend")
+            {
+                return countries.OrderByDescending(c => c.Name.Common);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid order parameter. Use 'ascend' or 'descend'.");
+            }
+        }
+
+        public IEnumerable<Country> PaginateCountries(List<Country> countries, int amount)
+        {
+            return countries.Take(amount);
+        }
+
+
+create unit tests for those functions by using .net core MSTest
+
+
+Sure, you can create unit tests for these methods using the MSTest framework in .NET Core. First, create a class to house your methods (let's call it `CountryService`). Then, set up an MSTest project and add a test class (let's call it `CountryServiceTests`) with test methods to test the various scenarios. Here's how you could structure the unit tests:
+
+1. Create a new MSTest project by running the following command:
+   ```
+   dotnet new mstest -n YourTestProjectName
+   ```
+
+2. In your MSTest project, create necessary classes (`Country`, `NameInfo`, and `CountryService`) and the test class with test methods as follows:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+public class Country
+{
+    public NameInfo Name { get; set; }
+    public long Population { get; set; }
+}
+
+public class NameInfo
+{
+    public string Common { get; set; }
+}
+
+public class CountryService
+{
+    // Your methods go here...
+}
+
+[TestClass]
+public class CountryServiceTests
+{
+    [TestMethod]
+    public void Test_FilterCountriesByCommonName()
+    {
+        var countries = new List<Country>
+        {
+            new Country { Name = new NameInfo { Common = "India" }, Population = 1300000000 },
+            new Country { Name = new NameInfo { Common = "Indonesia" }, Population = 270000000 }
+        };
+
+        var service = new CountryService();
+        var result = service.FilterCountriesByCommonName(countries, "ind");
+
+        Assert.AreEqual(2, result.Count());
+    }
+
+    [TestMethod]
+    public void Test_FilterCountriesByPopulation()
+    {
+        var countries = new List<Country>
+        {
+            new Country { Name = new NameInfo { Common = "India" }, Population = 1300000000 },
+            new Country { Name = new NameInfo { Common = "Indonesia" }, Population = 270000000 }
+        };
+
+        var service = new CountryService();
+        var result = service.FilterCountriesByPopulation(countries, 300000000);
+
+        Assert.AreEqual(1, result.Count());
+    }
+
+    [TestMethod]
+    public void Test_SortCountries()
+    {
+        var countries = new List<Country>
+        {
+            new Country { Name = new NameInfo { Common = "India" }, Population = 1300000000 },
+            new Country { Name = new NameInfo { Common = "Australia" }, Population = 25000000 }
+        };
+
+        var service = new CountryService();
+        var result = service.SortCountries(countries, "descend");
+
+        Assert.AreEqual("India", result.First().Name.Common);
+    }
+
+    [TestMethod]
+    public void Test_PaginateCountries()
+    {
+        var countries = new List<Country>
+        {
+            new Country { Name = new NameInfo { Common = "India" }, Population = 1300000000 },
+            new Country { Name = new NameInfo { Common = "Australia" }, Population = 25000000 },
+            new Country { Name = new NameInfo { Common = "USA" }, Population = 330000000 }
+        };
+
+        var service = new CountryService();
+        var result = service.PaginateCountries(countries, 2);
+
+        Assert.AreEqual(2, result.Count());
+    }
+}
+```
+
+3. Make sure to add the necessary `using` statements and the correct namespaces.
+4. Then run the tests using:
+   ```
+   dotnet test
+   ```
+
+Explanation:
+
+1. I've defined the `Country`, `NameInfo`, and `CountryService` classes.
+2. In the `CountryServiceTests` class, each method tests a corresponding method in the `CountryService` class.
+3. Inside each test method, I've instantiated a list of `Country` objects and then called the respective method from `CountryService` to check if they return the expected results.
+4. I've used the `Assert.AreEqual` method from MSTest to check the expected results.
