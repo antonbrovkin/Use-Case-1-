@@ -1,0 +1,118 @@
+I need to create class named Country with single property named Population with type long.
+
+I need to create a filter, which can use an array of Country items and filter it by Population property. Filter should show results which below entered value.
+
+
+You can accomplish this in a variety of programming languages. Here's how you might do it in C#:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Country
+{
+    public long Population { get; set; }
+}
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        List<Country> countries = new List<Country>
+        {
+            new Country { Population = 50000000 },
+            new Country { Population = 100000000 },
+            new Country { Population = 200000000 },
+            new Country { Population = 300000000 }
+        };
+
+        long threshold = 150000000;
+        List<Country> filteredCountries = FilterCountriesByPopulation(countries, threshold);
+        foreach (var country in filteredCountries)
+        {
+            Console.WriteLine(country.Population);
+        }
+    }
+
+    public static List<Country> FilterCountriesByPopulation(List<Country> countries, long threshold)
+    {
+        return countries.Where(c => c.Population < threshold).ToList();
+    }
+}
+```
+
+Explanation of the code:
+
+1. We define a `Country` class with a `Population` property of type `long`.
+2. We then create a `FilterCountriesByPopulation` method which takes a list of `Country` objects and a `threshold` of type `long`. It returns a list of `Country` objects where the population is less than the threshold.
+3. Inside the `Main` method, we create a list of `Country` objects and apply the `FilterCountriesByPopulation` method with a threshold of 150000000. The filtered results are then printed to the console.
+
+You would compile and run this program, and it should print the populations of countries with a population less than 150,000,000.
+
+
+
+
+
+
+
+
+
+
+
+
+I need to create class named Country with single property named Population with type long.
+
+I need to create a filter, which can use an array of Country items and filter it by Population property. Filter should show results which below entered value.
+
+for example if I put 10 value it should be used as 10 million
+
+
+
+
+You can accomplish this by creating a `Country` class with a `Population` property of type long, and a method to filter an array of `Country` objects by population. Here is a sample implementation in C#:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Country
+{
+    public long Population { get; set; }
+}
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        Country[] countries = {
+            new Country { Population = 5000000 },
+            new Country { Population = 10000000 },
+            new Country { Population = 20000000 },
+            new Country { Population = 30000000 }
+        };
+
+        long threshold = 10; // Input value in millions
+        Country[] filteredCountries = FilterCountriesByPopulation(countries, threshold * 1000000); // Convert to actual value
+        foreach (var country in filteredCountries)
+        {
+            Console.WriteLine(country.Population);
+        }
+    }
+
+    public static Country[] FilterCountriesByPopulation(Country[] countries, long threshold)
+    {
+        return countries.Where(c => c.Population < threshold).ToArray();
+    }
+}
+```
+
+Explanation of the code:
+
+1. We define a `Country` class with a `Population` property of type `long`.
+2. We create a `FilterCountriesByPopulation` method which takes an array of `Country` objects and a `threshold` of type `long`. It returns an array of `Country` objects where the population is less than the threshold.
+3. Inside the `Main` method, we create an array of `Country` objects and apply the `FilterCountriesByPopulation` method with a threshold of 10 million (we multiply the input value by 1,000,000 to convert it to the actual population number).
+4. The filtered results are then printed to the console.
+
+When you run this program, it will print the populations of countries with a population less than 10 million.
