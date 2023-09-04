@@ -18,7 +18,7 @@ namespace UC1.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCountries(string commonNamePartial, long? populationThreshold, string order, int? amount)
+        public async Task<IActionResult> GetCountries(long? populationThreshold, int? amount, string commonNamePartial = "", string order = "")
         {
             List<Country> countries = await GetCountriesAsync();
 
@@ -45,17 +45,17 @@ namespace UC1.Controllers
             return Ok(countries);
         }
 
-        public static IEnumerable<Country> FilterCountriesByCommonName(List<Country> countries, string commonNamePartial)
+        public IEnumerable<Country> FilterCountriesByCommonName(List<Country> countries, string commonNamePartial)
         {
             return countries.Where(c => c.Name.Common.IndexOf(commonNamePartial, StringComparison.OrdinalIgnoreCase) != -1);
         }
 
-        public static IEnumerable<Country> FilterCountriesByPopulation(List<Country> countries, long threshold)
+        public IEnumerable<Country> FilterCountriesByPopulation(List<Country> countries, long threshold)
         {
             return countries.Where(c => c.Population < threshold);
         }
 
-        public static IEnumerable<Country> SortCountries(List<Country> countries, string order)
+        public IEnumerable<Country> SortCountries(List<Country> countries, string order)
         {
             if (order.ToLower() == "ascend")
             {
@@ -71,7 +71,7 @@ namespace UC1.Controllers
             }
         }
 
-        public static IEnumerable<Country> PaginateCountries(List<Country> countries, int amount)
+        public IEnumerable<Country> PaginateCountries(List<Country> countries, int amount)
         {
             return countries.Take(amount);
         }
