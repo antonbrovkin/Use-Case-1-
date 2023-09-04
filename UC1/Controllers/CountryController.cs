@@ -42,7 +42,7 @@ namespace UC1.Controllers
                 countries = PaginateCountries(countries, amount.Value).ToList();
             }
 
-            return countries;
+            return Ok(countries);
         }
 
         public static IEnumerable<Country> FilterCountriesByCommonName(List<Country> countries, string commonNamePartial)
