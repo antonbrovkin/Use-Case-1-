@@ -8,13 +8,6 @@ namespace UC1.Controllers
     [Route("api/[controller]")]
     public class CountryController : Controller
     {
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            List<Country> countries = await GetCountriesAsync();
-            return Ok(countries);
-        }
-
         public async Task<List<Country>> GetCountriesAsync()
         {
             using HttpClient client = new HttpClient();
@@ -22,6 +15,27 @@ namespace UC1.Controllers
             string jsonResponse = await client.GetStringAsync(url);
 
             return JsonSerializer.Deserialize<List<Country>>(jsonResponse, Converter.Settings);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get(string commonCountryName = "")
+        {
+            List<Country> countries = await GetCountriesAsync();
+
+            if (!string.IsNullOrWhiteSpace(commonCountryName))
+            {
+                return Ok(FilterCountriesByCommonName(countries, commonCountryName));
+            }
+            else 
+            {
+                return Ok(countries);
+            }
+
+        }
+
+        public static IEnumerable<Country> FilterCountriesByCommonName(List<Country> countries, string commonNamePartial)
+        {
+            return countries.Where(c => c.Name.Common.IndexOf(commonNamePartial, StringComparison.OrdinalIgnoreCase) != -1);
         }
     }
 }
