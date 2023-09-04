@@ -46,44 +46,44 @@ Here are 11 examples of API usage:
 Example 1: Fetching All Countries
 You could start by simply getting a list of all countries without any filters:
 
-GET http://localhost:5000/api/countries
+GET http://localhost:5000/api/country
 
 Example 2: Fetching Countries with Population Less than 1 Million
 
-GET http://localhost:5000/api/countries?populationThreshold=1
+GET http://localhost:5000/api/country?populationThreshold=1
 
 Example 3: Fetching the Top 5 Countries by a name
 
-GET http://localhost:5000/api/countries?amount=5&order=ascend
+GET http://localhost:5000/api/country?amount=5&order=ascend
 
 Example 4: Fetching Countries with Common Name Partially Matching "stan"
 
-GET http://localhost:5000/api/countries?commonNamePartial=stan
+GET http://localhost:5000/api/country?commonNamePartial=stan
 
 Example 5: Fetching 10 Countries with Population Less than 10 Million, Ordered by Name
 
-GET http://localhost:5000/api/countries?populationThreshold=10&amount=10&order=ascend
+GET http://localhost:5000/api/country?populationThreshold=10&amount=10&order=ascend
 
 Example 6: Fetching 15 Countries with Common Name Partially Matching "land", Ordered by Name
 
-GET http://localhost:5000/api/countries?commonNamePartial=land&amount=15&order=ascend
+GET http://localhost:5000/api/country?commonNamePartial=land&amount=15&order=ascend
 
 Example 7: Fetching the Top 3 Countries with Population Less than 50 Million, Ordered by Name in Descending Order
 
-GET http://localhost:5000/api/countries?populationThreshold=50&amount=3&order=descend
+GET http://localhost:5000/api/country?populationThreshold=50&amount=3&order=descend
 
 Example 8: Fetching Countries with Common Name Partially Matching "repub", Limited to 5 Results
 
-GET http://localhost:5000/api/countries?commonNamePartial=repub&amount=5
+GET http://localhost:5000/api/country?commonNamePartial=repub&amount=5
 
 Example 9: Fetching 10 Countries with Population Less than 5 Million, Ordered by Name in Descending Order
 
-GET http://localhost:5000/api/countries?populationThreshold=5&amount=10&order=descend
+GET http://localhost:5000/api/country?populationThreshold=5&amount=10&order=descend
 
 Example 10: Fetching the Top 20 Countries with Common Name Partially Matching "island", Ordered by Name
 
-GET http://localhost:5000/api/countries?commonNamePartial=island&amount=20&order=ascend
+GET http://localhost:5000/api/country?commonNamePartial=island&amount=20&order=ascend
 
 Example 11: Fetching 7 Countries with Population Less than 100 Million, Ordered by Name in Descending Order
 
-GET http://localhost:5000/api/countries?populationThreshold=100&amount=7&order=descend
+GET http://localhost:5000/api/country?populationThreshold=100&amount=7&order=descend
