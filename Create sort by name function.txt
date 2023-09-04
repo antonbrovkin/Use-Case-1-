@@ -1,0 +1,77 @@
+I need to create class named Country with single property Name with type Name.
+class Name should have single property named "Common" with type string.
+
+Also I need to create a filter, which can use an array of Country items and sort it by Common property. Filter could be used to filter by asc or desc order
+
+
+You can accomplish this task by creating the classes as specified and then creating a filter function that can sort an array of `Country` objects by the `Common` property in either ascending or descending order. Here's an example of how you could do this in C#:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Name
+{
+    public string Common { get; set; }
+}
+
+public class Country
+{
+    public Name Name { get; set; }
+}
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        List<Country> countries = new List<Country>
+        {
+            new Country { Name = new Name { Common = "Brazil" } },
+            new Country { Name = new Name { Common = "Australia" } },
+            new Country { Name = new Name { Common = "France" } },
+        };
+
+        List<Country> sortedCountriesAsc = FilterCountries(countries, "asc");
+        List<Country> sortedCountriesDesc = FilterCountries(countries, "desc");
+
+        Console.WriteLine("Sorted in ascending order:");
+        foreach (var country in sortedCountriesAsc)
+        {
+            Console.WriteLine(country.Name.Common);
+        }
+
+        Console.WriteLine("\nSorted in descending order:");
+        foreach (var country in sortedCountriesDesc)
+        {
+            Console.WriteLine(country.Name.Common);
+        }
+    }
+
+    public static List<Country> FilterCountries(List<Country> countries, string order)
+    {
+        if (order.ToLower() == "asc")
+        {
+            return countries.OrderBy(c => c.Name.Common).ToList();
+        }
+        else if (order.ToLower() == "desc")
+        {
+            return countries.OrderByDescending(c => c.Name.Common).ToList();
+        }
+        else
+        {
+            throw new ArgumentException("Invalid order parameter. Use 'asc' or 'desc'.");
+        }
+    }
+}
+```
+
+Explanation:
+
+1. We first define the `Name` and `Country` classes, with `Country` having a property of type `Name`, and `Name` having a property of type `string` called `Common`.
+
+2. Next, we create a list of `Country` objects and populate it with a few examples.
+
+3. We then define a `FilterCountries` method which takes a list of `Country` objects and a string indicating the order ("asc" or "desc") and returns a list of `Country` objects sorted in the specified order.
+
+4. In the `Main` method, we use this `FilterCountries` method to sort the list of countries in both ascending and descending order, and print the sorted lists to the console.
